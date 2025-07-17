@@ -14,6 +14,7 @@ export default class Cube
         this.mouse = new THREE.Vector2()
         this.rotationStarted = null;
         this.rotationEnds = null;
+        this.highlightedSide = null;
 
         Cube.ROTATION_DURATION = 200;
         
@@ -201,13 +202,13 @@ export default class Cube
         this.raycaster.setFromCamera(this.mouse, this.camera)
         const intersects = this.raycaster.intersectObject(this.hitbox);
 
-        for (const cubie of this.cubies)
-        {
-            cubie.mesh.material.emissive.set(0x000000);
-        }
-
         if (!intersects[0])
         {
+            for (const cubie of this.cubies)
+            {
+                cubie.mesh.material.emissive.set(0x000000);
+            }
+            this.highlightedSide = null;
             return;
         };
 
@@ -215,14 +216,18 @@ export default class Cube
         for (let i = 0; i < 6; i++)
         {
             const key = Object.keys(Cubie.directions)[i];
-            if (face.normal.equals(Cubie.directions[key]))
+            if (this.highlightedSide !== i && face.normal.equals(Cubie.directions[key]))
             {
                 this.updateSide(i);
+                this.highlightedSide = i;
+                for (const cubie of this.cubies)
+                {
+                    cubie.mesh.material.emissive.set(0x000000);
+                }
                 for (const cubie of this.sides[i].array)
                 {
                     cubie.mesh.material.emissive.set(0x444444);
                 }
-                      
             }
         }
     }

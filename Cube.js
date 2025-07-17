@@ -141,6 +141,11 @@ export default class Cube
     startRotation(sideIndex)
     {
         if (this.animating !== -1) return;
+        this.highlightedSide = null;
+        this.cubies.forEach(cubie => 
+        {
+            cubie.mesh.material.emissive.set(0x000000);
+        });
         this.updateSide(sideIndex);
         this.rotationStarted = Date.now();
         this.rotationEnds = this.rotationStarted + Cube.ROTATION_DURATION;

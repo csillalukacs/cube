@@ -3,15 +3,12 @@ import * as THREE from 'three';
 
 export default class Cubie
 {
-    constructor(x, y, z, color)      
+    constructor(x, y, z)      
     {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.color = color;
-        if (!Cubie.material) Cubie.material = this.createMaterial();
         this.mesh = this.createMesh();
-        this.highlighted = false;
     }
 
     static directions = {
@@ -22,8 +19,6 @@ export default class Cubie
         FORWARD: new THREE.Vector3(0, 0, 1),
         BACK: new THREE.Vector3(0, 0, -1)
     }
-
-    static material;
 
     createMesh()
     {

@@ -98,7 +98,6 @@ export default class Cube
         if (this.animating !== -1) return;
         this.cubies.forEach(cubie => 
         {
-            const x = this.getRelativePosition(cubie);
             if (this.isOnSide(cubie, sideIndex))
             {
                 if (!this.sides[sideIndex].array.includes(cubie))
@@ -110,13 +109,12 @@ export default class Cube
                 this.sides[sideIndex].array = this.sides[sideIndex].array.filter(c => c !== cubie);
                 this.theRest.attach(cubie.mesh);
             }
-            const y = this.getRelativePosition(cubie);
         });
     }
   
-    createCubie(x, y, z, color) 
+    createCubie(x, y, z) 
     {
-        const cubie = new Cubie(x, y, z, color);
+        const cubie = new Cubie(x, y, z);
         this.cubies.push(cubie);
         return cubie;
     }
@@ -129,8 +127,7 @@ export default class Cube
             {
                 for (let k = -1; k < 2; k++) 
                 {
-                    let color = i === 0 ? 0xdd88dd : i===1 ? 0x23eedd : 0x3344aa;
-                    const cubie = this.createCubie(i, j, k, color);
+                    const cubie = this.createCubie(i, j, k);
                     this.theRest.add(cubie.mesh);
                 }
             }
@@ -154,22 +151,6 @@ export default class Cube
         this.startAngle = this.sides[sideIndex].group.rotation[axis];
         this.endAngle = this.startAngle + Math.PI / 2;
         this.animating = sideIndex;
-    }
-
-    animateSide(sideIndex)
-    {
-        let rotation = 0;
-        const l = Math.PI / 2;
-        const axis = (sideIndex === 0 || sideIndex === 1) ? "y" : 
-            (sideIndex === 2 || sideIndex === 3) ? "x" : "z";
-
-        this.sides[sideIndex].group.rotation[axis]+= 0.08;
-        rotation = this.sides[sideIndex].group.rotation[axis];
-        if (rotation % l  < 0.05)
-        {
-            this.sides[sideIndex].group.rotation[axis]= Math.floor(rotation / l) * l;
-            this.animating = -1;
-        }
     }
 
     rotateSide(sideIndex, endAngle)

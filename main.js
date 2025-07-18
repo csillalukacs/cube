@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import Cube from './Cube.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-const sizes = {
+export const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }

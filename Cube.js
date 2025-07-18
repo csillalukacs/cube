@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import Cubie from './Cubie.js';
+import {sizes} from './main.js';
 
 export default class Cube
 {
@@ -13,8 +14,8 @@ export default class Cube
         this.raycaster = new THREE.Raycaster()
         this.mouse = new THREE.Vector2()
         this.rotationStarted = null;
-        this.rotationEnds = null;
         this.highlightedSide = null;
+        this.mouseDownPosition = new THREE.Vector2();
 
         Cube.ROTATION_DURATION = 200;
         
@@ -44,11 +45,22 @@ export default class Cube
         this.hitbox = mesh;
         this.group.add(mesh);
 
-        window.addEventListener("click", this.onClick.bind(this));
+        window.addEventListener("mouseup", this.onClick.bind(this));
+        window.addEventListener("mousedown", this.mouseDown.bind(this));
     }
+
+    mouseDown(event)
+    {
+        this.mouseDownPosition.x = (event.clientX / sizes.width) * 2 - 1
+        this.mouseDownPosition.y = - (event.clientY / sizes.height) * 2 + 1
+    }
+
 
     onClick(event)
     {
+        const mouseUpX = (event.clientX / sizes.width) * 2 - 1
+        const mouseUpY = - (event.clientY / sizes.height) * 2 + 1
+        if (Math.abs(mouseUpX - this.mouseDownPosition.x) > 0.01 || Math.abs(mouseUpY - this.mouseDownPosition.y) > 0.01) return;
         this.raycaster.setFromCamera(this.mouse, this.camera);
         const intersects = this.raycaster.intersectObject(this.hitbox);
         if (!intersects[0]) return;
@@ -138,14 +150,9 @@ export default class Cube
     startRotation(sideIndex)
     {
         if (this.animating !== -1) return;
-        this.highlightedSide = null;
-        this.cubies.forEach(cubie => 
-        {
-            cubie.mesh.material.emissive.set(0x000000);
-        });
+        this.resetHighlight();
         this.updateSide(sideIndex);
         this.rotationStarted = Date.now();
-        this.rotationEnds = this.rotationStarted + Cube.ROTATION_DURATION;
         const axis = (sideIndex === 0 || sideIndex === 1) ? "y" : 
         (sideIndex === 2 || sideIndex === 3) ? "x" : "z";
         this.startAngle = this.sides[sideIndex].group.rotation[axis];
@@ -159,6 +166,15 @@ export default class Cube
         (sideIndex === 2 || sideIndex === 3) ? "x" : "z";
 
         this.sides[sideIndex].group.rotation[axis] = endAngle % (Math.PI * 2);
+    }
+
+    resetHighlight()
+    {
+        for (const cubie of this.cubies)
+        {
+            cubie.mesh.material.emissive.set(0x000000);
+        }
+        this.highlightedSide = null;
     }
 
     update() 
@@ -188,13 +204,9 @@ export default class Cube
         this.raycaster.setFromCamera(this.mouse, this.camera)
         const intersects = this.raycaster.intersectObject(this.hitbox);
 
-        if (!intersects[0])
+        if (!intersects.length)
         {
-            for (const cubie of this.cubies)
-            {
-                cubie.mesh.material.emissive.set(0x000000);
-            }
-            this.highlightedSide = null;
+            this.resetHighlight();
             return;
         };
 
@@ -205,11 +217,8 @@ export default class Cube
             if (this.highlightedSide !== i && face.normal.equals(Cubie.directions[key]))
             {
                 this.updateSide(i);
+                this.resetHighlight();
                 this.highlightedSide = i;
-                for (const cubie of this.cubies)
-                {
-                    cubie.mesh.material.emissive.set(0x000000);
-                }
                 for (const cubie of this.sides[i].array)
                 {
                     cubie.mesh.material.emissive.set(0x444444);

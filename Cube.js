@@ -24,9 +24,6 @@ export default class Cube
         for (let i = 0; i < 6; i++)
         {
             const gr = new THREE.Group();
-            if (i === 0) gr.applyMatrix4(new THREE.Matrix4().makeScale (1, 1, -1));
-            if (i === 3) gr.applyMatrix4(new THREE.Matrix4().makeScale (1, 1, -1));
-            if (i === 4) gr.applyMatrix4(new THREE.Matrix4().makeScale(1, 1, -1));
             this.sides.push({array: [], group: gr});
             this.group.add(gr);
         }

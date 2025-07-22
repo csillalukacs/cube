@@ -29,6 +29,8 @@ export default class Cubie
         GREEN: 0x009b48,
     }
 
+    static roughnessTexture = new THREE.TextureLoader().load('rect5.png');
+
     createMesh()
     {
         const geometry = new THREE.BoxGeometry(0.98, 0.98, 0.98).toNonIndexed();
@@ -72,9 +74,11 @@ export default class Cubie
         const material = new THREE.MeshStandardMaterial({
             vertexColors: true,
             defines: { USE_UV: '' },
-            roughness: 0.3,
+            roughness: 1,
             metalness: 0.1
         });
+
+        material.roughnessMap = Cubie.roughnessTexture
 
         material.onBeforeCompile = (shader) => {
             shader.fragmentShader = shader.fragmentShader.replace(

@@ -156,7 +156,8 @@ export default class Cube
         const axis = (sideIndex === 0 || sideIndex === 1) ? "y" : 
         (sideIndex === 2 || sideIndex === 3) ? "x" : "z";
         this.startAngle = this.sides[sideIndex].group.rotation[axis];
-        this.endAngle = this.startAngle + Math.PI / 2;
+        const reverse = sideIndex === 0 || sideIndex === 3 || sideIndex === 4;
+        this.endAngle = this.startAngle + (Math.PI / 2) * ( reverse ? -1 : 1);
         this.animating = sideIndex;
     }
 
@@ -184,8 +185,9 @@ export default class Cube
 
         if (this.animating !== -1)
         {
+            const reverse = this.animating === 0 || this.animating === 3 || this.animating === 4;
             const delta = Date.now() - this.rotationStarted;
-            const angle = delta*(Math.PI / 2 / Cube.ROTATION_DURATION);
+            const angle = delta*(Math.PI / 2 / Cube.ROTATION_DURATION)*(reverse ? -1 : 1);
             this.rotateSide(this.animating, this.startAngle + angle);
             if (delta >= Cube.ROTATION_DURATION)
             {

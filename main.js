@@ -75,17 +75,49 @@ function cubeSetup()
 
 function addLights()
 {
+    const distance = 2.5
     const pointLight = new THREE.PointLight(0xffffff, 30)
-    pointLight.position.set(2,3,5)
+    pointLight.position.set(0,0,distance)
     scene.add(pointLight)
 
     const pointLight2 = new THREE.PointLight(0xffffff, 30)
-    pointLight2.position.set(0, 3, 0)
+    pointLight2.position.set(0, distance, 0)
     scene.add(pointLight2)
 
     const pointLight3 = new THREE.PointLight(0xffffff, 30)
-    pointLight3.position.set(0, 0, 6)
+    pointLight3.position.set(0, 0, distance)
     scene.add(pointLight3)
+
+    const pointLight4 = new THREE.PointLight(0xffffff, 30)
+    pointLight4.position.set(0, 0, -distance)
+    scene.add(pointLight4)
+
+    const pointLight5 = new THREE.PointLight(0xffffff, 30)
+    pointLight5.position.set(0, -distance, 0)
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight.position.set(0, 0, distance)
+    scene.add(directionalLight)
+
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight2.position.set(0, distance, 0)
+    scene.add(directionalLight2)        
+
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight3.position.set(distance, 0, 0)
+    scene.add(directionalLight3)        
+
+    const directionalLight4 = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight4.position.set(0, 0, -distance)
+    scene.add(directionalLight4)        
+
+    const directionalLight5 = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight5.position.set(0, -distance, 0)
+    scene.add(directionalLight5)                
+
+    const directionalLight6 = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight6.position.set(-distance, 0, 0)
+    scene.add(directionalLight6)
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 1)
     scene.add(ambientLight)

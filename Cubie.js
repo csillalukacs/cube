@@ -20,6 +20,15 @@ export default class Cubie
         BACK: new THREE.Vector3(0, 0, -1)
     }
 
+    static colors = {
+        WHITE: 0xffffff,
+        YELLOW: 0xffd500,
+        ORANGE: 0xff5800,
+        RED: 0xb71234,
+        BLUE: 0x0046ad,
+        GREEN: 0x009b48,
+    }
+
     createMesh()
     {
         const geometry = new THREE.BoxGeometry(0.98, 0.98, 0.98).toNonIndexed();
@@ -36,12 +45,12 @@ export default class Cubie
             color.set(0x0);
 
             normal.fromBufferAttribute(normals, i);
-            if (normal.equals(Cubie.directions.UP) && this.y === 1) color.set(0x009b48);
-            if (normal.equals(Cubie.directions.DOWN) && this.y === -1) color.set(0xffffff);
-            if (normal.equals(Cubie.directions.LEFT) && this.x === -1) color.set(0xff5800);
-            if (normal.equals(Cubie.directions.RIGHT) && this.x === 1) color.set(0xb71234);
-            if (normal.equals(Cubie.directions.BACK) && this.z === -1) color.set(0xffd500);
-            if (normal.equals(Cubie.directions.FORWARD) && this.z === 1) color.set(0x0046ad);
+            if (normal.equals(Cubie.directions.UP) && this.y === 1) color.set(Cubie.colors.WHITE);
+            if (normal.equals(Cubie.directions.DOWN) && this.y === -1) color.set(Cubie.colors.YELLOW);
+            if (normal.equals(Cubie.directions.LEFT) && this.x === -1) color.set(Cubie.colors.ORANGE);
+            if (normal.equals(Cubie.directions.RIGHT) && this.x === 1) color.set(Cubie.colors.RED);
+            if (normal.equals(Cubie.directions.BACK) && this.z === -1) color.set(Cubie.colors.BLUE);
+            if (normal.equals(Cubie.directions.FORWARD) && this.z === 1) color.set(Cubie.colors.GREEN);
             
             for (let j = 0; j < 6; j++)
             {

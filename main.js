@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Cube from './Cube.js';
+import Teapot from './Teapot.js';
 
 export const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 } 
 
-let scene, camera, renderer, cube;
+let scene, camera, renderer, cube, teapot;
 
 function generalSetup()
 {
@@ -90,12 +91,42 @@ function addLights()
     scene.add(ambientLight)
 }
 
+function setupRotationTest()
+{
+    teapot = new Teapot(scene, camera);
+
+    teapot.addtoScene();
+
+    const axesHelper = new THREE.AxesHelper( 5 );
+    scene.add( axesHelper );
+
+    window.addEventListener('keydown', (e) =>
+    {
+        console.log(e)
+        if (teapot.animating !== -1) return;
+        switch (e.key)
+        {
+            case 'x':
+                teapot.startRotation("x");
+                break;
+            case 'y':
+                teapot.startRotation("y");
+                break;
+            case 'z':
+                teapot.startRotation("z");
+                break;
+        }
+    })
+}
+
 generalSetup();
 cubeSetup();
+// setupRotationTest();
 
 function animate() 
 {
     if (cube) cube.update();
+    if (teapot) teapot.update();
     renderer.render(scene, camera);
 
 }

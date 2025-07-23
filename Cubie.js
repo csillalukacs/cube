@@ -33,7 +33,12 @@ export default class Cubie
 
     createMesh()
     {
-        const geometry = new THREE.BoxGeometry(0.98, 0.98, 0.98).toNonIndexed();
+        let size = [0.96, 0.96, 0.96];
+        if (this.x === 0 && this.y === 0 && this.z === 0) 
+        {
+            size = [1.2, 1.2, 1.2];
+        }
+        const geometry = new THREE.BoxGeometry(...size).toNonIndexed();
         
         const positionAttribute = geometry.getAttribute( 'position' );
         const normals = geometry.getAttribute( 'normal');
